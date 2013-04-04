@@ -1,0 +1,5 @@
+name: IO13Contest
+description: A sample web application
+dependencies:
+  google_maps: ">=1.0.1 <2.0.0"
+  browser: any

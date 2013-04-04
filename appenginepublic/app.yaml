@@ -1,0 +1,16 @@
+runtime: go
+api_version: go1
+application: onlyangelpublic
+version: 1
+
+handlers:  
+
+- url: /
+  script: _go_app
+
+  
+- url: /st
+  static_dir: static
+- url: /google3fa87da090e4c8e1.html
+  script: _go_app
+

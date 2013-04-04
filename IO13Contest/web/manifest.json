@@ -1,0 +1,17 @@
+{
+  "name": "SW Ripples",
+  "description": "The influence of SW Events over the time.",
+  "version": "0.0.0.1",
+  "manifest_version": 2,
+  "icons": {
+    "128": "icon.png"
+  },
+  "app": {
+    "urls": [
+      "http://onlyangelpublic.appspot.com/st/SWIO13Contest01/index.html"
+    ],
+    "launch": {
+      "web_url": "http://onlyangelpublic.appspot.com/st/SWIO13Contest01/index.html"
+    }
+  }
+}
