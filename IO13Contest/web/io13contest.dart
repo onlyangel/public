@@ -120,7 +120,34 @@ class EventsModel{
   
   void addMarker() {
     var d = daylist[int.parse(slider.value)];
+    print(d);
+    var cantidadDefacilitadores = new Map();
+    var eventscount = 0;
+    var encontrado = false;
+    for (int n = 0; n < eventsData.length; n++){
+      eventscount++;
+      eventsData[n]["facilitators"].forEach((facil){
+        cantidadDefacilitadores[facil["name"]] = 1;
+      });
+      if ((eventsData[n]["start_date"] == d)&&(!encontrado)){
+        encontrado = true;
+        print("Encontrado: $n");
+        //n = eventsData.length;
+      }if ((eventsData[n]["start_date"] != d)&&(encontrado)){
+        n = eventsData.length;
+      }
+    }
     
+    var facilitatorscanvas = query("#facilitatorscanvas");
+    facilitatorscanvas.nodes.clear();
+    for (int n = 0; n<cantidadDefacilitadores.length; n++){
+      var img = new ImageElement();
+      img.src = "legoman.png";
+      facilitatorscanvas.nodes.add(img);
+    }
+    
+    query("#eventoscount").text = "$eventscount";
+    query("#facilitatorscount").text = "${cantidadDefacilitadores.length}";
     
     DateTime dt = DateTime.parse(d);
     query("#title").text = "${dt.year}/${dt.month}/${dt.day}";

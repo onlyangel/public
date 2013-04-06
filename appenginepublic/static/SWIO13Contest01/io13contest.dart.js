@@ -4208,6 +4208,9 @@ $$.Object = {"": ";",
   set$map: function($receiver, $0) {
     return this.noSuchMethod$1(this, $.createInvocationMirror("map=", "set$map", 2, [$0], []));
   },
+  set$src: function($receiver, $0) {
+    return this.noSuchMethod$1(this, $.createInvocationMirror("src=", "set$src", 2, [$0], []));
+  },
   set$zoom: function($receiver, $0) {
     return this.noSuchMethod$1(this, $.createInvocationMirror("zoom=", "set$zoom", 2, [$0], []));
   },
@@ -6020,16 +6023,41 @@ $$.EventsModel = {"": "Object;temp,eventsData,daylist<,eventsByDay<,slider<,play
     $.scoped(new $.EventsModel_showMap_anon(this));
   },
   addMarker$0: function() {
-    var t1, t2, dt;
+    var t1, t2, d, cantidadDefacilitadores, eventscount, encontrado, n, facilitatorscanvas, img, dt;
     t1 = this.daylist;
     t2 = $.int_parse($.get$value$x(this.slider), null, null);
     if (t2 !== (t2 | 0))
       throw $.iae(t2);
     if (t2 < 0 || t2 >= t1.length)
       throw $.ioore(t2);
-    dt = $.DateTime_parse(t1[t2]);
+    d = t1[t2];
+    $.Primitives_printString($.toString$0(d));
+    cantidadDefacilitadores = $.HashMap$();
+    for (eventscount = 0, encontrado = false, n = 0; $.$lt$n(n, $.get$length$asx(this.eventsData)); n = $.$add$ns(n, 1)) {
+      ++eventscount;
+      $.forEach$1$ax($.$index$asx($.$index$asx(this.eventsData, n), "facilitators"), new $.EventsModel_addMarker_anon(cantidadDefacilitadores));
+      if ($.$eq($.$index$asx($.$index$asx(this.eventsData, n), "start_date"), d) === true && !encontrado) {
+        $.Primitives_printString("Encontrado: " + $.S(n));
+        encontrado = true;
+      }
+      if ($.$eq($.$index$asx($.$index$asx(this.eventsData, n), "start_date"), d) !== true && encontrado)
+        n = $.get$length$asx(this.eventsData);
+    }
+    facilitatorscanvas = $.query$1$x(document, "#facilitatorscanvas");
+    t1 = $.getInterceptor$x(facilitatorscanvas);
+    t2 = t1.get$nodes(facilitatorscanvas);
+    t2.clear$0(t2);
+    for (n = 0; n < cantidadDefacilitadores.get$length(cantidadDefacilitadores); ++n) {
+      img = $.ImageElement_ImageElement(null, null, null);
+      $.set$src$x(img, "legoman.png");
+      t2 = t1.get$nodes(facilitatorscanvas);
+      t2.add$1(t2, img);
+    }
+    $.query$1$x(document, "#eventoscount").textContent = "" + eventscount;
+    $.query$1$x(document, "#facilitatorscount").textContent = $.S(cantidadDefacilitadores.get$length(cantidadDefacilitadores));
+    dt = $.DateTime_parse(d);
     $.query$1$x(document, "#title").textContent = "" + dt.get$year() + "/" + dt.get$month() + "/" + dt.get$day();
-    $.scoped(new $.EventsModel_addMarker_anon(this));
+    $.scoped(new $.EventsModel_addMarker_anon0(this));
   },
   EventsModel$1: function(temp) {
     this.slider = $.query("#slider");
@@ -6104,10 +6132,17 @@ $$.EventsModel_showMap__anon = {"": "Closure;this_1",
   }
 };
 
-$$.EventsModel_addMarker_anon = {"": "Closure;this_0",
+$$.EventsModel_addMarker_anon = {"": "Closure;cantidadDefacilitadores_0",
+  call$1: function(facil) {
+    var t1 = this.cantidadDefacilitadores_0;
+    t1.$indexSet(t1, $.$index$asx(facil, "name"), 1);
+  }
+};
+
+$$.EventsModel_addMarker_anon0 = {"": "Closure;this_1",
   call$0: function() {
     var t1, day, t2, t3, days, day0;
-    t1 = this.this_0;
+    t1 = this.this_1;
     day = $.int_parse($.get$value$x(t1.get$slider()), null, null);
     t2 = t1.get$eventsByDay();
     t3 = t1.get$daylist();
@@ -6168,7 +6203,7 @@ $$.EventsModel_addMarker__anon = {"": "Closure;",
   }
 };
 
-$$.EventsModel_addMarker__anon0 = {"": "Closure;this_1",
+$$.EventsModel_addMarker__anon0 = {"": "Closure;this_2",
   call$1: function(cir) {
     var t1, center, opt, circle;
     t1 = $.getInterceptor$asx(cir);
@@ -6181,7 +6216,7 @@ $$.EventsModel_addMarker__anon0 = {"": "Closure;this_1",
     opt.set$fillColor("#FF0000");
     opt.set$fillOpacity(0.35);
     opt.set$radius(100000);
-    t1 = this.this_1;
+    t1 = this.this_2;
     opt.set$map(opt, t1.get$themap());
     circle = $.Circle$(opt);
     $._jsGlobalize.callSync$1($._serialize(circle._jsProxy._proxy.toJs$0()));
@@ -6189,7 +6224,7 @@ $$.EventsModel_addMarker__anon0 = {"": "Closure;this_1",
   }
 };
 
-$$.EventsModel_addMarker__anon1 = {"": "Closure;this_2",
+$$.EventsModel_addMarker__anon1 = {"": "Closure;this_3",
   call$1: function(cir) {
     var t1, center, opt, circle;
     t1 = $.getInterceptor$asx(cir);
@@ -6202,7 +6237,7 @@ $$.EventsModel_addMarker__anon1 = {"": "Closure;this_2",
     opt.set$fillColor("#FF0000");
     opt.set$fillOpacity(0.3);
     opt.set$radius(200000);
-    t1 = this.this_2;
+    t1 = this.this_3;
     opt.set$map(opt, t1.get$themap());
     circle = $.Circle$(opt);
     $._jsGlobalize.callSync$1($._serialize(circle._jsProxy._proxy.toJs$0()));
@@ -6210,7 +6245,7 @@ $$.EventsModel_addMarker__anon1 = {"": "Closure;this_2",
   }
 };
 
-$$.EventsModel_addMarker__anon2 = {"": "Closure;this_3",
+$$.EventsModel_addMarker__anon2 = {"": "Closure;this_4",
   call$1: function(cir) {
     var t1, center, opt, circle;
     t1 = $.getInterceptor$asx(cir);
@@ -6223,7 +6258,7 @@ $$.EventsModel_addMarker__anon2 = {"": "Closure;this_3",
     opt.set$fillColor("#FF0000");
     opt.set$fillOpacity(0.25);
     opt.set$radius(400000);
-    t1 = this.this_3;
+    t1 = this.this_4;
     opt.set$map(opt, t1.get$themap());
     circle = $.Circle$(opt);
     $._jsGlobalize.callSync$1($._serialize(circle._jsProxy._proxy.toJs$0()));
@@ -6231,7 +6266,7 @@ $$.EventsModel_addMarker__anon2 = {"": "Closure;this_3",
   }
 };
 
-$$.EventsModel_addMarker__anon3 = {"": "Closure;this_4",
+$$.EventsModel_addMarker__anon3 = {"": "Closure;this_5",
   call$1: function(cir) {
     var t1, center, opt, circle;
     t1 = $.getInterceptor$asx(cir);
@@ -6244,7 +6279,7 @@ $$.EventsModel_addMarker__anon3 = {"": "Closure;this_4",
     opt.set$fillColor("#FF0000");
     opt.set$fillOpacity(0.2);
     opt.set$radius(600000);
-    t1 = this.this_4;
+    t1 = this.this_5;
     opt.set$map(opt, t1.get$themap());
     circle = $.Circle$(opt);
     $._jsGlobalize.callSync$1($._serialize(circle._jsProxy._proxy.toJs$0()));
@@ -6252,7 +6287,7 @@ $$.EventsModel_addMarker__anon3 = {"": "Closure;this_4",
   }
 };
 
-$$.EventsModel_addMarker__anon4 = {"": "Closure;this_5",
+$$.EventsModel_addMarker__anon4 = {"": "Closure;this_6",
   call$1: function(cir) {
     var t1, center, opt, circle;
     t1 = $.getInterceptor$asx(cir);
@@ -6265,7 +6300,7 @@ $$.EventsModel_addMarker__anon4 = {"": "Closure;this_5",
     opt.set$fillColor("#FF0000");
     opt.set$fillOpacity(0.15);
     opt.set$radius(800000);
-    t1 = this.this_5;
+    t1 = this.this_6;
     opt.set$map(opt, t1.get$themap());
     circle = $.Circle$(opt);
     $._jsGlobalize.callSync$1($._serialize(circle._jsProxy._proxy.toJs$0()));
@@ -8299,6 +8334,17 @@ $.HttpRequest_request = function(url, method, onProgress, responseType, sendData
   return completer.future;
 };
 
+$.ImageElement_ImageElement = function(height, src, width) {
+  var e = $.$$dom_createElement$1$x(document, "img");
+  if (src != null)
+    $.set$src$x(e, src);
+  if (width != null)
+    $.set$width$x(e, width);
+  if (height != null)
+    $.set$height$x(e, height);
+  return e;
+};
+
 $._ChildNodeListLazy$ = function(_this) {
   return new $._ChildNodeListLazy(_this);
 };
@@ -9354,14 +9400,23 @@ $.send$1$x = function(receiver, a0) {
 $.send$2$x = function(receiver, a0, a1) {
   return $.getInterceptor$x(receiver).send$2(receiver, a0, a1);
 };
+$.set$height$x = function(receiver, value) {
+  return $.getInterceptor$x(receiver).set$height(receiver, value);
+};
 $.set$map$ax = function(receiver, value) {
   return $.getInterceptor$ax(receiver).set$map(receiver, value);
 };
 $.set$max$ax = function(receiver, value) {
   return $.getInterceptor$ax(receiver).set$max(receiver, value);
 };
+$.set$src$x = function(receiver, value) {
+  return $.getInterceptor$x(receiver).set$src(receiver, value);
+};
 $.set$value$x = function(receiver, value) {
   return $.getInterceptor$x(receiver).set$value(receiver, value);
+};
+$.set$width$x = function(receiver, value) {
+  return $.getInterceptor$x(receiver).set$width(receiver, value);
 };
 $.sublist$1$ax = function(receiver, a0) {
   return $.getInterceptor$ax(receiver).sublist$1(receiver, a0);
@@ -9673,6 +9728,8 @@ $.$defineNativeClass("Blob", {
 
 $.$defineNativeClass("HTMLButtonElement", {"": "type},value%"});
 
+$.$defineNativeClass("HTMLCanvasElement", {"": "height},width}"});
+
 $.$defineNativeClass("CharacterData", {"": "length="});
 
 $.$defineNativeClass("WebKitCSSMatrix", {
@@ -9681,7 +9738,22 @@ $.$defineNativeClass("WebKitCSSMatrix", {
   }
 });
 
-$.$defineNativeClass("CSSStyleDeclaration", {"": "length="});
+$.$defineNativeClass("CSSStyleDeclaration", {"": "length=",
+  setProperty$3: function(receiver, propertyName, value, priority) {
+    var exception;
+    try {
+      receiver.setProperty(propertyName, value, priority);
+      if (!!receiver.setAttribute)
+        receiver.setAttribute(propertyName, value);
+    } catch (exception) {
+      $.unwrapException(exception);
+    }
+
+  },
+  set$src: function(receiver, value) {
+    this.setProperty$3(receiver, "src", value, "");
+  }
+});
 
 $.$defineNativeClass("CustomEvent", {"": "detail=",
   $$dom_initCustomEvent$4: function(receiver, typeArg, canBubbleArg, cancelableArg, detailArg) {
@@ -10044,7 +10116,7 @@ $.$defineNativeClass("Element", {"": "$$dom_children:children=,id=,innerHtml:inn
   }
 });
 
-$.$defineNativeClass("HTMLEmbedElement", {"": "type}"});
+$.$defineNativeClass("HTMLEmbedElement", {"": "height},src},type},width}"});
 
 $.$defineNativeClass("Entry", {
   _liblib3$_remove$2: function(receiver, successCallback, errorCallback) {
@@ -10571,6 +10643,8 @@ $.$defineNativeClass("XMLHttpRequestUpload", {
   }
 });
 
+$.$defineNativeClass("HTMLIFrameElement", {"": "height},src},width}"});
+
 $.$defineNativeClass("ImageData", {
   $isImageData: function() {
     return true;
@@ -10580,7 +10654,9 @@ $.$defineNativeClass("ImageData", {
   }
 });
 
-$.$defineNativeClass("HTMLInputElement", {"": "max},type},value%",
+$.$defineNativeClass("HTMLImageElement", {"": "height},src},width}"});
+
+$.$defineNativeClass("HTMLInputElement", {"": "height},max},src},type},value%,width}",
   $isElement: function() {
     return true;
   },
@@ -10830,7 +10906,7 @@ $.$defineNativeClass("MediaController", {
   }
 });
 
-$.$defineNativeClass("HTMLMediaElement", {"": "error="});
+$.$defineNativeClass("HTMLMediaElement", {"": "error=,src}"});
 
 $.$defineNativeClass("MediaList", {"": "length="});
 
@@ -11014,7 +11090,7 @@ $.$defineNativeClass("Notification", {
 
 $.$defineNativeClass("HTMLOListElement", {"": "type}"});
 
-$.$defineNativeClass("HTMLObjectElement", {"": "type}"});
+$.$defineNativeClass("HTMLObjectElement", {"": "height},type},width}"});
 
 $.$defineNativeClass("HTMLOptionElement", {"": "value%"});
 
@@ -11070,7 +11146,7 @@ $.$defineNativeClass("RTCPeerConnection", {
 
 $.$defineNativeClass("RTCStatsReport", {"": "id="});
 
-$.$defineNativeClass("HTMLScriptElement", {"": "type}"});
+$.$defineNativeClass("HTMLScriptElement", {"": "src},type}"});
 
 $.$defineNativeClass("ScriptProfileNode", {
   children$0: function(receiver) {
@@ -11165,7 +11241,9 @@ $.$defineNativeClass("SourceBufferList", {
   }
 });
 
-$.$defineNativeClass("HTMLSourceElement", {"": "type}"});
+$.$defineNativeClass("HTMLSourceElement", {"": "src},type}"});
+
+$.$defineNativeClass("SpeechGrammar", {"": "src}"});
 
 $.$defineNativeClass("SpeechGrammarList", {
   get$length: function(receiver) {
@@ -11552,6 +11630,8 @@ $.$defineNativeClass("TouchList", {
   }
 });
 
+$.$defineNativeClass("HTMLTrackElement", {"": "src}"});
+
 $.$defineNativeClass("UIEvent", {"": "detail="});
 
 $.$defineNativeClass("Uint16Array", {
@@ -11885,6 +11965,8 @@ $.$defineNativeClass("Uint8ClampedArray", {
     return null;
   }
 });
+
+$.$defineNativeClass("HTMLVideoElement", {"": "height},width}"});
 
 $.$defineNativeClass("WebKitNamedFlow", {
   $$dom_addEventListener$3: function(receiver, type, listener, useCapture) {
@@ -13459,8 +13541,8 @@ $.$defineNativeClass("SQLResultSetRowList", {
   }
 });
 
-// 146 dynamic classes.
-// 314 classes
+// 152 dynamic classes.
+// 315 classes
 // 31 !leaf
 (function() {
   var v0_Uint8Array = "Uint8Array|Uint8ClampedArray", v1_MediaElement = "HTMLAudioElement|HTMLMediaElement|HTMLVideoElement", v2_SvgElement = "SVGAElement|SVGAltGlyphDefElement|SVGAltGlyphElement|SVGAltGlyphItemElement|SVGAnimateColorElement|SVGAnimateElement|SVGAnimateMotionElement|SVGAnimateTransformElement|SVGAnimationElement|SVGCircleElement|SVGClipPathElement|SVGComponentTransferFunctionElement|SVGCursorElement|SVGDefsElement|SVGDescElement|SVGElement|SVGEllipseElement|SVGFEBlendElement|SVGFEColorMatrixElement|SVGFEComponentTransferElement|SVGFECompositeElement|SVGFEConvolveMatrixElement|SVGFEDiffuseLightingElement|SVGFEDisplacementMapElement|SVGFEDistantLightElement|SVGFEDropShadowElement|SVGFEFloodElement|SVGFEFuncAElement|SVGFEFuncBElement|SVGFEFuncGElement|SVGFEFuncRElement|SVGFEGaussianBlurElement|SVGFEImageElement|SVGFEMergeElement|SVGFEMergeNodeElement|SVGFEMorphologyElement|SVGFEOffsetElement|SVGFEPointLightElement|SVGFESpecularLightingElement|SVGFESpotLightElement|SVGFETileElement|SVGFETurbulenceElement|SVGFilterElement|SVGFontElement|SVGFontFaceElement|SVGFontFaceFormatElement|SVGFontFaceNameElement|SVGFontFaceSrcElement|SVGFontFaceUriElement|SVGForeignObjectElement|SVGGElement|SVGGlyphElement|SVGGlyphRefElement|SVGGradientElement|SVGHKernElement|SVGImageElement|SVGLineElement|SVGLinearGradientElement|SVGMPathElement|SVGMarkerElement|SVGMaskElement|SVGMetadataElement|SVGMissingGlyphElement|SVGPathElement|SVGPatternElement|SVGPolygonElement|SVGPolylineElement|SVGRadialGradientElement|SVGRectElement|SVGSVGElement|SVGScriptElement|SVGSetElement|SVGStopElement|SVGStyleElement|SVGStyledElement|SVGSwitchElement|SVGSymbolElement|SVGTRefElement|SVGTSpanElement|SVGTextContentElement|SVGTextElement|SVGTextPathElement|SVGTextPositioningElement|SVGTitleElement|SVGUseElement|SVGVKernElement|SVGViewElement", v3_Element = [v1_MediaElement, v2_SvgElement, "Element|HTMLAnchorElement|HTMLAppletElement|HTMLAreaElement|HTMLBRElement|HTMLBaseElement|HTMLBaseFontElement|HTMLBodyElement|HTMLButtonElement|HTMLCanvasElement|HTMLContentElement|HTMLDListElement|HTMLDataListElement|HTMLDetailsElement|HTMLDirectoryElement|HTMLDivElement|HTMLElement|HTMLEmbedElement|HTMLFieldSetElement|HTMLFontElement|HTMLFormElement|HTMLFrameElement|HTMLFrameSetElement|HTMLHRElement|HTMLHeadElement|HTMLHeadingElement|HTMLHtmlElement|HTMLIFrameElement|HTMLImageElement|HTMLInputElement|HTMLKeygenElement|HTMLLIElement|HTMLLabelElement|HTMLLegendElement|HTMLLinkElement|HTMLMapElement|HTMLMarqueeElement|HTMLMenuElement|HTMLMetaElement|HTMLMeterElement|HTMLModElement|HTMLOListElement|HTMLObjectElement|HTMLOptGroupElement|HTMLOptionElement|HTMLOutputElement|HTMLParagraphElement|HTMLParamElement|HTMLPreElement|HTMLProgressElement|HTMLQuoteElement|HTMLScriptElement|HTMLSelectElement|HTMLShadowElement|HTMLSourceElement|HTMLSpanElement|HTMLStyleElement|HTMLTableCaptionElement|HTMLTableCellElement|HTMLTableColElement|HTMLTableElement|HTMLTableRowElement|HTMLTableSectionElement|HTMLTextAreaElement|HTMLTitleElement|HTMLTrackElement|HTMLUListElement|HTMLUnknownElement"].join("|"), v4_CharacterData = "CDATASection|CharacterData|Comment|Text", v5_Document = "Document|HTMLDocument|SVGDocument", v6_DocumentFragment = "DocumentFragment|ShadowRoot", v7_Node = [v3_Element, v4_CharacterData, v5_Document, v6_DocumentFragment, "Attr|DocumentType|EntityReference|Node|Notation|ProcessingInstruction"].join("|"), v8_AbstractWorker = "AbstractWorker|SharedWorker|Worker", v9_WorkerContext = "DedicatedWorkerContext|SharedWorkerContext|WorkerContext", v10_MediaStream = "LocalMediaStream|MediaStream", v11_Request = "IDBOpenDBRequest|IDBRequest";
